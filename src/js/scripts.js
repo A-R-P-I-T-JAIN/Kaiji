@@ -95,20 +95,20 @@ function updateLoadingProgress() {
     }
 }
 
-audioLoader.load('./assets/card_flip.mp3', function(buffer) {
+audioLoader.load('/assets/card_flip.mp3', function(buffer) {
     cardFlip.setBuffer(buffer);
     cardFlip.setVolume(2);
 });
 
 // Load camera movement sound
-audioLoader.load('./assets/start.mp3', function(buffer) {
+audioLoader.load('/assets/start.mp3', function(buffer) {
     cameraMove.setBuffer(buffer);
     cameraMove.setVolume(1.5);
     updateLoadingProgress();
 });
 
 // Load card sounds
-audioLoader.load('./assets/card_drop.mp3', function(buffer) {
+audioLoader.load('/assets/card_drop.mp3', function(buffer) {
     cardDrop.setBuffer(buffer);
     cardDrop.setVolume(2);
     updateLoadingProgress();
@@ -146,7 +146,7 @@ scene.add(spotLight);
 // const hemisphereLight = new THREE.HemisphereLight(0xFFFFFF, 0x444444, 0.6);
 // scene.add(hemisphereLight);
 
-gltfLoader.load('./assets/kitchen_table.glb', function(glb) {
+gltfLoader.load('/assets/kitchen_table.glb', function(glb) {
     const model = glb.scene;
     scene.add(model);
     model.rotateY(Math.PI / 2);
@@ -173,7 +173,7 @@ gltfLoader.load('./assets/kitchen_table.glb', function(glb) {
 //     });
 // })
 
-gltfLoader.load('./assets/abandoned_brick_room.glb',function(glb) {
+gltfLoader.load('/assets/abandoned_brick_room.glb',function(glb) {
     const model = glb.scene;
     scene.add(model);
     // model.rotateY(Math.PI / 2);

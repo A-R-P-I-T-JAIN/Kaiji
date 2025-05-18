@@ -12,6 +12,14 @@
             "dest": "/src/game.html"
         },
         {
+            "src": "/assets/(.*)",
+            "dest": "/src/assets/$1"
+        },
+        {
+            "src": "/js/(.*)",
+            "dest": "/src/js/$1"
+        },
+        {
             "src": "/(.*)",
             "dest": "/src/$1"
         }
