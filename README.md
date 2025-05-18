@@ -1,6 +1,6 @@
 # ecard
 
-"Create A 3D Cards Game Using Three.js And GSAPP" YouTube tutorial project files https://youtu.be/2Ie4wdjQisc
+
 
 1. Clone the repository;
 2. Open the folder in Visual Studio Code;
