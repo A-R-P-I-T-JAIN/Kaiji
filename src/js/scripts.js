@@ -95,24 +95,109 @@ function updateLoadingProgress() {
     }
 }
 
-audioLoader.load('/assets/card_flip.mp3', function(buffer) {
-    cardFlip.setBuffer(buffer);
-    cardFlip.setVolume(2);
-});
+// Add error handling for GLTFLoader
+gltfLoader.setPath('/assets/');
 
-// Load camera movement sound
-audioLoader.load('/assets/start.mp3', function(buffer) {
-    cameraMove.setBuffer(buffer);
-    cameraMove.setVolume(1.5);
-    updateLoadingProgress();
-});
+// Add error handling for model loading
+function handleError(error) {
+    console.error('Error loading model:', error);
+}
 
-// Load card sounds
-audioLoader.load('/assets/card_drop.mp3', function(buffer) {
-    cardDrop.setBuffer(buffer);
-    cardDrop.setVolume(2);
-    updateLoadingProgress();
-});
+// Update model loading with error handling
+gltfLoader.load('kitchen_table.glb', 
+    function(glb) {
+        const model = glb.scene;
+        scene.add(model);
+        model.rotateY(Math.PI / 2);
+        model.scale.set(0.35, 0.35, 0.35);
+        model.position.set(0.25, 0, 0);
+
+        model.traverse(function(node) {
+            if(node.isMesh)
+                node.receiveShadow = true;
+        });
+        updateLoadingProgress();
+        console.log('Kitchen table loaded successfully');
+    },
+    // Progress callback
+    function(xhr) {
+        console.log((xhr.loaded / xhr.total * 100) + '% loaded');
+    },
+    // Error callback
+    handleError
+);
+
+gltfLoader.load('abandoned_brick_room.glb',
+    function(glb) {
+        const model = glb.scene;
+        scene.add(model);
+        model.scale.set(4,4,4);
+        model.position.set(0, 0, 0);
+
+        model.traverse(function(node) {
+            if(node.isMesh)
+                node.receiveShadow = true;
+        });
+        updateLoadingProgress();
+        console.log('Room loaded successfully');
+    },
+    // Progress callback
+    function(xhr) {
+        console.log((xhr.loaded / xhr.total * 100) + '% loaded');
+    },
+    // Error callback
+    handleError
+);
+
+// Add error handling for audio loading
+function handleAudioError(error) {
+    console.error('Error loading audio:', error);
+}
+
+// Update audio loading with error handling
+audioLoader.load('/assets/card_drop.mp3', 
+    function(buffer) {
+        cardDrop.setBuffer(buffer);
+        cardDrop.setVolume(2);
+        updateLoadingProgress();
+        console.log('Card drop sound loaded successfully');
+    },
+    // Progress callback
+    function(xhr) {
+        console.log((xhr.loaded / xhr.total * 100) + '% loaded');
+    },
+    // Error callback
+    handleAudioError
+);
+
+audioLoader.load('/assets/card_flip.mp3', 
+    function(buffer) {
+        cardFlip.setBuffer(buffer);
+        cardFlip.setVolume(2);
+        console.log('Card flip sound loaded successfully');
+    },
+    // Progress callback
+    function(xhr) {
+        console.log((xhr.loaded / xhr.total * 100) + '% loaded');
+    },
+    // Error callback
+    handleAudioError
+);
+
+audioLoader.load('/assets/start.mp3', 
+    function(buffer) {
+        cameraMove.setBuffer(buffer);
+        cameraMove.setVolume(1.5);
+        updateLoadingProgress();
+        console.log('Start sound loaded successfully');
+    },
+    // Progress callback
+    function(xhr) {
+        console.log((xhr.loaded / xhr.total * 100) + '% loaded');
+    },
+    // Error callback
+    handleAudioError
+);
 
 const directionalLight = new THREE.DirectionalLight(0xFFFFFF, 0.8);
 directionalLight.position.y = 10;
@@ -145,47 +230,6 @@ scene.add(spotLight);
 // Add hemisphere light for ambient illumination
 // const hemisphereLight = new THREE.HemisphereLight(0xFFFFFF, 0x444444, 0.6);
 // scene.add(hemisphereLight);
-
-gltfLoader.load('/assets/kitchen_table.glb', function(glb) {
-    const model = glb.scene;
-    scene.add(model);
-    model.rotateY(Math.PI / 2);
-    model.scale.set(0.35, 0.35, 0.35);
-    model.position.set(0.25, 0, 0);
-
-    model.traverse(function(node) {
-        if(node.isMesh)
-            node.receiveShadow = true;
-    });
-    updateLoadingProgress();
-});
-
-// gltfLoader.load('./assets/room_99mb.glb',function(glb) {
-//     const model = glb.scene;
-//     scene.add(model);
-//     // model.rotateY(Math.PI / 2);
-//     model.scale.set(3,3,3)
-//     model.position.set(0, 0, 20);
-
-//     model.traverse(function(node) {
-//         if(node.isMesh)
-//             node.receiveShadow = true;
-//     });
-// })
-
-gltfLoader.load('/assets/abandoned_brick_room.glb',function(glb) {
-    const model = glb.scene;
-    scene.add(model);
-    // model.rotateY(Math.PI / 2);
-    model.scale.set(4,4,4)
-    model.position.set(0, 0, 0);
-
-    model.traverse(function(node) {
-        if(node.isMesh)
-            node.receiveShadow = true;
-    });
-    updateLoadingProgress();
-})
 
 // Sets a 12 by 12 gird helper
 const gridHelper = new THREE.GridHelper(12, 12);
@@ -439,4 +483,18 @@ window.addEventListener('resize', function() {
     camera.aspect = window.innerWidth / window.innerHeight;
     camera.updateProjectionMatrix();
     renderer.setSize(window.innerWidth, window.innerHeight);
+});
+
+// Add initialization check
+window.addEventListener('load', function() {
+    console.log('Window loaded, checking Three.js initialization...');
+    if (!renderer) {
+        console.error('Renderer not initialized');
+    }
+    if (!scene) {
+        console.error('Scene not initialized');
+    }
+    if (!camera) {
+        console.error('Camera not initialized');
+    }
 });
