@@ -4,7 +4,7 @@
   "description": "The Three.js boilerplate that I'm using in my Tutorials.",
   "scripts": {
   "start": "parcel ./src/index.html",
-  "build": "parcel build ./src/index.html ./src/game.html"
+  "build": "parcel build ./src/index.html"
 },
   "keywords": [],
   "author": "",
